@@ -1,18 +1,15 @@
 from glob import glob
 from pathlib import Path
 
+from saturnv.manager import FileBasedManager
 
 from Qt.QtGui import QIcon
 
 
-class IconManager (object):
+class IconManager (FileBasedManager):
 
     def __init__(self, path: Path):
         self.path = path
-
-    @property
-    def name(self):
-        return self.path.name
 
     def discover(self):
         for filename in glob(str(self.path / '*.png')):
@@ -24,6 +21,6 @@ class IconManager (object):
             if not dir_.is_dir():
                 continue
 
-            subengine = IconManager(dir_)
-            subengine.discover()
-            self.__setattr__(subengine.name, subengine)
+            submanager = self.__class__(dir_)
+            submanager.discover()
+            self.__setattr__(submanager.name, submanager)
