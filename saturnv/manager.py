@@ -2,7 +2,7 @@ from abc import ABC
 from pathlib import Path
 
 
-class BaseManager (object):
+class BaseManager(object):
 
     def discover(self):
         raise NotImplementedError()
@@ -14,7 +14,7 @@ class BaseManager (object):
 
 class FileBasedManager(BaseManager, ABC):
 
-    def __name__(self, path: Path):
+    def __init__(self, path: Path):
         super().__init__()
         self.path = path
 

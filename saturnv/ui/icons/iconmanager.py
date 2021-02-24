@@ -6,10 +6,7 @@ from saturnv.manager import FileBasedManager
 from Qt.QtGui import QIcon
 
 
-class IconManager (FileBasedManager):
-
-    def __init__(self, path: Path):
-        self.path = path
+class IconManager(FileBasedManager):
 
     def discover(self):
         for filename in glob(str(self.path / '*.png')):

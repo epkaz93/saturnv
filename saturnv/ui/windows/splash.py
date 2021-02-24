@@ -4,6 +4,7 @@ from Qt import QtCore
 
 from saturnv.ui import Application
 from saturnv.ui.icons import icons
+from saturnv.ui.widgets import ReadOnlyConsole, SpacerWidget
 
 
 class Splash(QtWidgets.QMainWindow):
@@ -17,13 +18,20 @@ class Splash(QtWidgets.QMainWindow):
         self.addToolBar(Qt.BottomToolBarArea, self.bottomToolBar())
         self._progressBar = QtWidgets.QProgressBar(textVisible=True)
         self.bottomToolBar().addWidget(self.progressBar())
-        self.tasks = []
+        self.setCentralWidget(QtWidgets.QWidget())
+        self.centralWidget().setLayout(QtWidgets.QVBoxLayout())
+        self.centralWidget().layout().addWidget(SpacerWidget())
+        self._console = ReadOnlyConsole()
+        self.centralWidget().layout().addWidget(self._console)
 
     def bottomToolBar(self):
         return self._bottomToolBar
 
     def progressBar(self):
         return self._progressBar
+
+    def appendTextToConsole(self, text):
+        self._console.appendPlainText(text)
 
     def sizeHint(self):
         return QtCore.QSize(900, 500)
