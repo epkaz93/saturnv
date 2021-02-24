@@ -1,0 +1,119 @@
+$default-padding: 0.2em;
+$default-color-dark: rgb(59, 65, 71);
+$default-color-text: rgb(250, 250, 250);
+$default-color-highlight: rgb(37, 110, 184);
+
+@mixin border ($width: 0.1em, $style: solid, $color: darken($default-color-dark, 5), $radius: 0.4em) {
+    @if $width {
+        border-width: $width;
+    }
+    @if $style {
+        border-style: $style;
+    }
+    @if $color {
+        border-color: $color;
+    }
+
+    @if $radius {
+        border-radius: $radius;
+    }
+}
+
+QWidget {
+    font-size: 11.5pt;
+    padding: $default-padding;
+    margin: $default-padding;
+    background-color: $default-color-dark;
+    color: $default-color-text;
+    selection-background-color: $default-color-highlight;
+    font-family: Roboto;
+}
+
+QAbstractButton {
+    border-radius: 0.4em;
+}
+
+QAbstractButton:hover {
+    background-color: lighten($default-color-dark, 10);
+}
+
+QAbstractButton:pressed {
+    background-color: $default-color-highlight;
+}
+
+QToolBar {
+    $toolbar-color-dark: lighten($default-color-dark, 10);
+
+    background-color: $toolbar-color-dark;
+    outline: None;
+    margin: 0;
+    border: None;
+
+    SpacerWidget, QMenuBar, QAbstractButton, QLabel {
+        background-color: $toolbar-color-dark;
+    }
+
+    QAbstractButton:hover {
+        background-color: $default-color-dark;
+    }
+
+    QAbstractButton:pressed {
+        background-color: $default-color-highlight;
+    }
+
+    &:separator {
+        width: 0.1em;
+        background-color: $default-color-dark;
+        margin: 0.3em 0.1em;
+    }
+}
+
+QLineEdit {
+    @include border;
+    border-radius: 0.4em;
+}
+
+QLineEdit:focus {
+    @include border($color: $default-color-highlight);
+}
+
+QMenu {
+    margin: 0;
+    padding: 0;
+}
+
+QProgressBar {
+    @include border($style: None);
+    padding: 0;
+    text-align: center;
+
+    &:chunk {
+        margin: 0;
+        @include border($color: darken($default-color-highlight, 15));
+        background-color: $default-color-highlight;
+    }
+}
+
+QScrollBar {
+
+    width: 1em;
+    height: 1em;
+    padding: 0;
+
+    &:handle {
+
+        background-color: lighten($default-color-dark, 15);
+        border-radius: 0.3em;
+
+        &:hover {
+            background-color: $default-color-highlight;
+        }
+    }
+
+    &:add-line, &:sub-line {
+        background-color: pink;
+        height: 0;
+        width: 0;
+    }
+
+}
