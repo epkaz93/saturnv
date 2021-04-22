@@ -4,6 +4,7 @@ from Qt.QtCore import Qt
 
 from saturnv.ui.icons import icons
 from saturnv.ui.widgets import SpacerWidget
+from saturnv.ui.widgets import InteractiveConsoleWidget
 
 
 class MainWindowMenuToolBar(QtWidgets.QToolBar):
@@ -81,6 +82,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.shelf_menu.addAction(self.action_new_shelf)
         self.shelf_menu.addAction(self.action_browse_shelves)
 
+        self.setCentralWidget(InteractiveConsoleWidget())
 
     def menuToolBar(self) -> MainWindowMenuToolBar:
         return self._menuToolBar

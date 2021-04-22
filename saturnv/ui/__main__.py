@@ -49,7 +49,6 @@ if __name__ == '__main__':
     logger.info('Loading Splash')
 
     splash = Splash()
-    logger.defaultHandler().messageWritten.connect(splash.appendTextToConsole)
     logger.info('Logger Connected')
     logger.info('Starting Imports')
 

@@ -1,3 +1,3 @@
 from .spacerwidget import SpacerWidget
 
-from .console import ReadOnlyConsole
+from .console import ReadOnlyConsoleWidget, InteractiveConsoleWidget
