@@ -1,7 +1,7 @@
 from glob import glob
 from pathlib import Path
 
-from saturnv.manager import FileBasedManager
+from saturnv.managers import FileBasedManager
 
 from Qt.QtGui import QIcon
 

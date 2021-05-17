@@ -4,8 +4,7 @@ import sass
 
 from Qt import QtWidgets
 
-
-from saturnv.manager import FileBasedManager
+from saturnv.managers import FileBasedManager
 
 
 class ThemeManager(FileBasedManager):
@@ -39,7 +38,7 @@ class Theme(object):
 
         self.name = name
         self.filepath = filepath
-        self._data = self.loadData()
+        self._data = self.load_data()
 
     @property
     def name(self):
@@ -57,7 +56,7 @@ class Theme(object):
     def filepath(self, filepath):
         self._filepath = filepath
 
-    def loadData(self):
+    def load_data(self):
         return sass.compile(filename=str(self.filepath))
 
     @property
