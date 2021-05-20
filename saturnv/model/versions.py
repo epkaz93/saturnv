@@ -1,0 +1,24 @@
+from datetime import datetime
+from uuid import UUID
+
+from saturnv.model.base import BaseModelItem, AbstractValueBase
+
+
+class Version(BaseModelItem):
+
+    def __init__(self, name, preset_uuid: UUID, blame: str, creation_date: datetime = None, icon: str = None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.name = name
+        self.preset_uuid = preset_uuid
+        self.blame = blame
+        self.creation_date = creation_date
+        self.icon = icon
+
+
+class Setting(AbstractValueBase):
+
+    def __init__(self, version_uuid: UUID, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.version_uuid = version_uuid
