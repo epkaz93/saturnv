@@ -20,4 +20,4 @@ class Shelf(Base):
     path = Column(String)
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
-    versions = relationship('Version', secondary='ShelfVersionLink')
+    #versions = relationship('Version', secondary='ShelfVersionLink')

@@ -27,7 +27,7 @@ class Version(Base):
 
     __tablename__ = 'versions'
 
-    uuid = Column(UUID(as_uuid=True), primary_key=True, unique=True)
+    uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False, primary_key=True)
     icon = Column(String)
     preset_uuid = Column(UUID(as_uuid=True), ForeignKey('presets.uuid'))
@@ -36,7 +36,7 @@ class Version(Base):
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
     settings = relationship('Setting', backref="version")
-    shelves = relationship('Shelf', secondary='ShelfVersionLink')
+    #shelves = relationship('Shelf', secondary='ShelfVersionLink')
     shortcuts = relationship('Shortcut', backref="version")
 
 
@@ -67,6 +67,10 @@ class Shortcut(Base):
     uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     version_uuid = Column(UUID(as_uuid=True), ForeignKey('versions.uuid'))
     icon = Column(String)
+    creation_date = Column(DateTime, default=datetime.now, nullable=False)
+    author = Column(String, nullable=False)
+
+    overrides = relationship('Override', backref='shortcut')
 
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
@@ -77,10 +81,11 @@ class Override(AbstractValueBase):
 
     shortcut_uuid = Column(UUID(as_uuid=True), ForeignKey('shortcuts.uuid'))
 
-
+'''
 class ShelfVersionLink(Base):
 
     __tablename__ = 'shelf_version_link'
 
     shelf_uuid = Column(UUID(as_uuid=True), ForeignKey('shelves.uuid'), primary_key=True)
     version_uuid = Column(UUID(as_uuid=True), ForeignKey('versions.uuid'), primary_key=True)
+'''
