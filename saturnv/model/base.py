@@ -8,6 +8,10 @@ class BaseModelItem(object):
     def __init__(self, uuid: UUID = None, metadata: Dict = None):
         self.uuid = uuid if uuid is not None else uuid4()
         self.metadata = metadata if metadata is not None else {}
+        self._repository = None
+
+    def associate_repository(self, repository):
+        self._repository = repository
 
 
 class AbstractValueBase(BaseModelItem):
