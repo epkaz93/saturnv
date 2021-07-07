@@ -14,17 +14,36 @@ class SqlAlchemyRepository(AbstractRepository):
         orm.start_mappers()
         self.session = session
 
+    @classmethod
+    def create_repository(cls):
+        return cls(Session())
+
+    def commit(self):
+        self.session.commit()
+
     def _add_preset(self, preset: model.Preset):
         self.session.add(preset)
 
     def _get_preset(self, uuid: UUID) -> model.Preset:
         return self.session.query(model.Preset).filter_by(uuid=uuid).first()
 
-    def _add_shelf(self, shelf: model.Shelve):
+    def _add_version(self, version: model.Version):
+        self.session.add(version)
+
+    def _get_version(self, uuid: UUID) -> model.Version:
+        return self.session.query(model.Version).filter_by(uuid=uuid).first()
+
+    def _add_setting(self, setting: model.Setting):
+        self.session.add(setting)
+
+    def _get_setting(self, uuid: UUID) -> model.Setting:
+        return self.session.query(model.Setting).filter_by(uuid=uuid).first()
+
+    def _add_shelf(self, shelf: model.Shelf):
         self.session.add(shelf)
 
-    def _get_shelf(self, uuid: UUID) -> model.Shelve:
-        return self.session.query(model.Shelve).filter_by(uuid=uuid).first()
+    def _get_shelf(self, uuid: UUID) -> model.Shelf:
+        return self.session.query(model.Shelf).filter_by(uuid=uuid).first()
 
     def _add_shortcut(self, shortcut: model.Shortcut):
         self.session.add(shortcut)
@@ -34,3 +53,10 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def _all_presets(self):
         return self.session.query(model.Preset).all()
+
+    def _all_shelves(self):
+        return self.session.query(model.Shelf).all()
+
+    def _versions_from_preset(self, preset: model.Preset):
+        versions = self.session.query(model.Version).filter_by(preset_uuid=preset.uuid).all()
+        return versions
