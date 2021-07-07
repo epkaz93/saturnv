@@ -20,4 +20,11 @@ class Shelf(Base):
     path = Column(String)
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
-    #versions = relationship('Version', secondary='ShelfVersionLink')
+
+class ShelfLink(Base):
+
+    __tablename__ = 'shelf_link'
+
+    shelf_uuid = Column(UUID(as_uuid=True), ForeignKey('shelves.uuid'), primary_key=True)
+    entity_uuid = Column(UUID(as_uuid=True), primary_key=True)
+    entity_type = Column(String)
