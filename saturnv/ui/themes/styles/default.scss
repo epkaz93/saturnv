@@ -31,14 +31,29 @@ QWidget {
 
 QAbstractButton {
     border-radius: 0.4em;
+    padding: $default-padding $default-padding * 2;
+
+    &:hover {
+        background-color: lighten($default-color-dark, 10);
+    }
+
+    &:pressed {
+        background-color: $default-color-highlight;
+    }
+
+    &:disabled {
+        background-color: lighten($default-color-dark, 25);
+        color: darken($default-color-text, 25);
+    }
 }
 
-QAbstractButton:hover {
-    background-color: lighten($default-color-dark, 10);
-}
+QPushButton {
+    $pushbutton-border-color: darken($default-color-dark, 5);
+    @include border($color: $pushbutton-border-color);
 
-QAbstractButton:pressed {
-    background-color: $default-color-highlight;
+    &:disabled {
+        border-color: lighten($pushbutton-border-color, 25);
+    }
 }
 
 QToolBar {
@@ -66,11 +81,23 @@ QToolBar {
         background-color: $default-color-dark;
         margin: 0.3em 0.1em;
     }
+
+    QPushButton {
+        background-color: $default-color-dark;
+
+        &:hover {
+            background-color: lighten($default-color-dark, 5);
+        }
+        &:pressed {
+            background-color: $default-color-highlight;
+        }
+    }
 }
 
 QLineEdit {
     @include border;
     border-radius: 0.4em;
+    background-color: lighten($default-color-dark, 10);
 }
 
 QLineEdit:focus {
@@ -116,4 +143,70 @@ QScrollBar {
         width: 0;
     }
 
+}
+
+QAbstractItemView {
+    padding: 0;
+    border: none;
+
+
+    &:item {
+        padding: $default-padding * 1.5;
+        /*
+        &:hover {
+            background-color: lighten($default-color-dark, 5);
+        }
+        */
+    }
+
+}
+
+QListView {
+    @include border();
+    background-color: lighten($default-color-dark, 10);
+
+    &:focus {
+        @include border($color: $default-color-highlight);
+    }
+}
+
+QListView:item {
+    border-radius: 0.4em;
+
+    &:selected {
+        background-color: $default-color-highlight;
+        outline: none;
+    }
+}
+
+QHeaderView {
+    padding: 0;
+    margin: 0;
+
+    &:section {
+        $header-color-dark: lighten($default-color-dark, 10);
+        $header-border-width: 0.1em;
+
+        @include border($width: $header-border-width, $radius: 0);
+
+        border-width: $header-border-width $header-border-width / 2;
+        //height: 2em;
+        padding: $default-padding * 2;
+        background-color: $header-color-dark;
+        margin: 0;
+
+        &:hover {
+            background-color: $default-color-dark;
+        }
+
+        &:first {
+            border-left-width: $header-border-width;
+            border-top-left-radius: 0.4em;
+        }
+
+        &:last {
+            border-top-right-radius: 0.4em;
+            border-right-width: $header-border-width;
+        }
+    }
 }
