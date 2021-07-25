@@ -4,8 +4,8 @@ import logging
 from Qt.QtCore import QTimer
 from Qt import QtGui
 
-from src.ui import Application
-from src.ui import get_logger
+from saturnv.ui import Application
+from saturnv.ui.qtlogger import get_logger
 
 
 logger = get_logger('Application')
@@ -37,10 +37,10 @@ def load_application(splash):
 if __name__ == '__main__':
     app = Application(sys.argv)
 
-    from src.ui import Splash
+    from saturnv.ui.windows import Splash
 
-    from src.ui.themes import themes
-    from src.ui import fonts
+    from saturnv.ui.themes import themes
+    from saturnv.ui.fonts import fonts
 
     if themes.has_default:
         themes.current_theme = themes.default
@@ -52,8 +52,8 @@ if __name__ == '__main__':
     logger.info('Logger Connected')
     logger.info('Starting Imports')
 
-    from src.ui import MainWindow
-    from src.ui import MainPresenter
+    from saturnv.ui.windows import MainWindow
+    from saturnv.ui.presenters import MainPresenter
 
     win = MainWindow(MainPresenter())
     #win = wizards.NewPresetWizard(wizards.BaseWizardPresenter())

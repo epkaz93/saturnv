@@ -2,9 +2,9 @@ from Qt import QtWidgets
 from Qt.QtCore import Qt
 from Qt import QtCore
 
-from src.ui import Application
-from src.ui import icons
-from src.ui import ReadOnlyConsoleWidget, SpacerWidget
+from saturnv.ui import Application
+from saturnv.ui.icons import icons
+from saturnv.ui.widgets import ReadOnlyConsoleWidget, SpacerWidget
 
 
 class Splash(QtWidgets.QMainWindow):

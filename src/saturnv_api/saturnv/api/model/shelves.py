@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.model.base import BaseModelItem
+from saturnv.api.model.base import BaseModelItem
 
 
 class Shelf(BaseModelItem):

@@ -1,7 +1,7 @@
 from abc import ABC
 from pathlib import Path
 
-from src.managers import BaseManager
+from saturnv.ui.managers import BaseManager
 
 
 class FileBasedManager(BaseManager, ABC):

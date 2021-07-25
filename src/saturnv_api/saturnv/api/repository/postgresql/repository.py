@@ -1,10 +1,10 @@
 from uuid import UUID
 
 from sqlalchemy.orm import Session
-from src import model
+from saturnv.api import model
 
 from saturnv.api.repository.abstractrepository import AbstractRepository
-from saturnv.api.repository import orm
+from saturnv.api.repository.postgresql import orm
 
 
 class SqlAlchemyRepository(AbstractRepository):

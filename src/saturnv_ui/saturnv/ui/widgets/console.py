@@ -4,8 +4,7 @@ from Qt import QtWidgets
 import code
 import logging
 
-from src.ui import QtLoggers
-from src.ui import get_logger
+from saturnv.ui.qtlogger import QtLoggers, get_logger
 
 logger = get_logger('Console')
 logger.setLevel(logging.DEBUG)

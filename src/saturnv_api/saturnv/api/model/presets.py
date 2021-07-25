@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.model.base import BaseModelItem
+from saturnv.api.model.base import BaseModelItem
 
 
 class Preset(BaseModelItem):

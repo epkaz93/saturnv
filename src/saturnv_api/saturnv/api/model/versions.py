@@ -2,7 +2,7 @@ import enum
 from datetime import datetime
 from uuid import UUID
 
-from src.model.base import BaseModelItem, AbstractValueBase
+from saturnv.api.model.base import BaseModelItem, AbstractValueBase
 
 import typing
 from typing import Dict, Union, List

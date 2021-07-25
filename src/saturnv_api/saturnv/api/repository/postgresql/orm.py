@@ -1,7 +1,7 @@
 from sqlalchemy.orm import mapper
 
-from src import model
-from src import database
+from saturnv.api import model
+from saturnv.api import database
 
 
 def start_mappers():

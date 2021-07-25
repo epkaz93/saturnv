@@ -1,7 +1,7 @@
 from glob import glob
 from pathlib import Path
 
-from src.managers import FileBasedManager
+from saturnv.ui.managers import FileBasedManager
 
 
 class FontManager(FileBasedManager):

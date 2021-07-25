@@ -4,7 +4,7 @@ import sass
 
 from Qt import QtWidgets
 
-from src.managers import FileBasedManager
+from saturnv.ui.managers import FileBasedManager
 
 
 class ThemeManager(FileBasedManager):

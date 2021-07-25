@@ -1,10 +1,10 @@
-from src.model import base
-from src.model.base import BaseModelItem, AbstractValueBase
-from src.model import presets
-from src.model.presets import Preset
-from src.model import shelves
-from src.model.shelves import Shelf, ShelfLink
-from src.model import shortcuts
-from src.model.shortcuts import Shortcut, Override
-from src.model import versions
-from src.model.versions import Version, Setting
+from . import base
+#from . import BaseModelItem, AbstractValueBase
+from . import presets
+from .presets import Preset
+from . import shelves
+from .shelves import Shelf, ShelfLink
+from . import shortcuts
+from .shortcuts import Shortcut, Override
+from . import versions
+from .versions import Version, Setting

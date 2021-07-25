@@ -1,7 +1,7 @@
-from src.ui import BasePresenter
+from saturnv.ui.presenters import BasePresenter
 
 from saturnv.api.database.core import Session
-from saturnv.api.repository import SqlAlchemyRepository
+from saturnv.api.repository.repositories import SqlAlchemyRepository
 
 
 class MainPresenter(BasePresenter):

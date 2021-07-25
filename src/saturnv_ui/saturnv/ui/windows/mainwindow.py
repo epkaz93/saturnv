@@ -2,11 +2,11 @@ from Qt import QtWidgets
 from Qt import QtCore
 from Qt.QtCore import Qt
 
-from src.ui import icons
-from src.ui import SpacerWidget
-from src.ui.widgets.presets import PresetTreeView
+from saturnv.ui.icons import icons
+from saturnv.ui.widgets import SpacerWidget
+from saturnv.ui.widgets.presets import PresetTreeView
 
-from src.ui import PresenterWidgetMixin, MainPresenter
+from saturnv.ui.presenters import PresenterWidgetMixin, MainPresenter
 
 
 class MainWindowMenuToolBar(QtWidgets.QToolBar):

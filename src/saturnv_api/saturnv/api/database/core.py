@@ -4,11 +4,11 @@ from sqlalchemy.ext.declarative import declarative_base
 
 class Configuration:
 
-    username = 'src'
-    password = 'src'
+    username = 'saturnv'
+    password = 'saturnv'
     hostname = 'localhost'
     port = '5432'
-    database = 'src'
+    database = 'saturnv'
 
     @staticmethod
     def get_engine_url(username=username, password=password, hostname=hostname, port=port, database=database):
