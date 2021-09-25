@@ -1,8 +1,12 @@
-from saturnv.api import database
-from saturnv.api.model import base
+from __future__ import annotations
 
+from saturnv.api import database
+from saturnv.api.models import base
 
 from .basemodel import PostgresqlBaseModelMixin
+
+
+import typing
 
 
 class PresetModel(PostgresqlBaseModelMixin, base.AbstractPresetModel):
@@ -11,11 +15,15 @@ class PresetModel(PostgresqlBaseModelMixin, base.AbstractPresetModel):
 
     def __init__(self, interface: database.Preset = None, **kwargs):
         PostgresqlBaseModelMixin.__init__(self, interface)
-        super().__init__(**kwargs)
+        base.AbstractPresetModel.__init__(self, **kwargs)
 
     @property
-    def versions(self):
+    def versions(self) -> typing.List[VersionModel]:
         return [VersionModel(interface=v) for v in self._interface.versions]
+
+    @property
+    def latest_version(self):
+        return VersionModel(interface=self._interface.versions.order_by(database.Version.creation_date.desc()).one())
 
 
 class VersionModel(PostgresqlBaseModelMixin, base.AbstractVersionModel):
@@ -24,14 +32,14 @@ class VersionModel(PostgresqlBaseModelMixin, base.AbstractVersionModel):
 
     def __init__(self, interface: database.Version = None, **kwargs):
         PostgresqlBaseModelMixin.__init__(self, interface)
-        super().__init__(**kwargs)
+        base.AbstractVersionModel.__init__(self, **kwargs)
 
     @property
-    def preset(self):
+    def preset(self) -> PresetModel:
         return PresetModel(interface=self._interface.preset)
 
     @property
-    def settings(self):
+    def settings(self) -> typing.List[SettingModel]:
         return [SettingModel(interface=s) for s in self._interface.settings]
 
     @property
@@ -45,10 +53,10 @@ class SettingModel(PostgresqlBaseModelMixin, base.AbstractSettingModel):
 
     def __init__(self, interface=None, **kwargs):
         PostgresqlBaseModelMixin.__init__(self, interface)
-        super().__init__(**kwargs)
+        base.AbstractSettingModel.__init__(self, **kwargs)
 
     @property
-    def version(self):
+    def version(self) -> VersionModel:
         return VersionModel(interface=self._interface.version)
 
 
@@ -58,10 +66,10 @@ class ShortcutModel(PostgresqlBaseModelMixin, base.AbstractShortcutModel):
 
     def __init__(self, interface=None, **kwargs):
         PostgresqlBaseModelMixin.__init__(self, interface)
-        super().__init__(**kwargs)
+        base.AbstractShortcutModel.__init__(self, **kwargs)
 
     @property
-    def version(self):
+    def version(self) -> VersionModel:
         return VersionModel(interface=self._interface.version)
 
 
@@ -71,8 +79,8 @@ class OverrideModel(PostgresqlBaseModelMixin, base.AbstractOverrideModel):
 
     def __init__(self, interface=None, **kwargs):
         PostgresqlBaseModelMixin.__init__(self, interface)
-        super().__init__(**kwargs)
+        base.AbstractOverrideModel.__init__(self, **kwargs)
 
     @property
-    def shortcut(self):
+    def shortcut(self) -> ShortcutModel:
         return ShortcutModel(interface=self._interface.shortcut)

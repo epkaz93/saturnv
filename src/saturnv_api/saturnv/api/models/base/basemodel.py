@@ -7,8 +7,6 @@ from uuid import uuid4
 class AbstractBaseModel(object):
 
     def __init__(self, **kwargs):
-        super().__init__()
-
         for key, value in filter(lambda i: i[1] is not None, kwargs.items()):
             self.set_attribute(key, value)
 

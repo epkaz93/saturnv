@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, DateTime, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, DateTime, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.ext.mutable import MutableDict
@@ -20,7 +20,7 @@ class Preset(Base):
     deleted = Column(Boolean, default=False, nullable=False)
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
-    versions = relationship('Version', backref=backref("preset", cascade='all, delete-orphan'))
+    versions = relationship('Version', backref="preset", lazy='dynamic')
 
 
 class Version(Base):

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from saturnv.api.model.base import AbstractBaseModel
+from saturnv.api.models.base import AbstractBaseModel
 
 import typing
 if typing.TYPE_CHECKING:
@@ -11,9 +11,9 @@ class PostgresqlBaseModelMixin(AbstractBaseModel):
 
     __interface_class__ = None
 
-    def __init__(self, interface=None, session=None, **kwargs):
+    def __init__(self, interface=None, session: Session = None, **kwargs):
         super().__init__(**kwargs)
-        self._interface = interface if interface else self.__db_class__()
+        self._interface = interface if interface else self.__interface_class__()
         self.session = session
 
     def set_attribute(self, name, value):
