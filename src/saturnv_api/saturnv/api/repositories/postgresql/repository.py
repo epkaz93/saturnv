@@ -18,7 +18,7 @@ class Repository(AbstractRepository):
 
     def get_shelves(self, deleted=False) -> typing.List[ShelfModel]:
         query = self._session.query(Shelf)
-        return [ShelfModel(interface=s) for s in query.filter(Shelf.deleted == deleted).all()]
+        return [ShelfModel(interface=s) for s in query.all()]
 
     def commit(self):
         return self._session.commit()

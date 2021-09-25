@@ -20,6 +20,8 @@ class Shelf(Base):
     path = Column(String)
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
+    links = relationship('ShelfLink', backref="shelf", lazy='dynamic')
+
 
 class ShelfLink(Base):
 
