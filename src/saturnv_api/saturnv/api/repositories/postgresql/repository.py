@@ -1,7 +1,7 @@
 from sqlalchemy.orm.session import Session
 
 from saturnv.api.repositories.base import AbstractRepository
-from saturnv.api.database import Preset, Shelf
+from saturnv.api.databases.postgresql import Preset, Shelf
 from saturnv.api.models.postgresql import PresetModel, ShelfModel
 
 import typing

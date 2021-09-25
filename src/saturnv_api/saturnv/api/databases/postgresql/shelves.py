@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.ext.mutable import MutableDict
 
-from saturnv.api.database.core import Base
+from .core import Base
 
 
 class Shelf(Base):

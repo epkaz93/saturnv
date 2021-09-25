@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from saturnv.api import database
+from saturnv.api.databases import postgresql as database
 from saturnv.api.models import base
 
 from .basemodel import PostgresqlBaseModelMixin
