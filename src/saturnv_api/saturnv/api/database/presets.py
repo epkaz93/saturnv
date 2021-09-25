@@ -36,8 +36,8 @@ class Version(Base):
     blame = Column(String, nullable=False)
     metadata_ = Column(MutableDict.as_mutable(JSONB), name='metadata')
 
-    settings = relationship('Setting', backref="version")
-    shortcuts = relationship('Shortcut', backref="version")
+    settings = relationship('Setting', backref="version", lazy='dynamic')
+    shortcuts = relationship('Shortcut', backref="version", lazy='dynamic')
 
 
 class AbstractValueBase(Base):

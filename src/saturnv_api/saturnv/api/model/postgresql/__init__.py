@@ -1,8 +1,9 @@
-from .postgresql import (
+from .presets import (
     PresetModel,
     VersionModel,
     SettingModel,
     ShortcutModel,
-    OverrideModel,
-    ShelfModel
+    OverrideModel
 )
+
+from .shelves import ShelfModel
