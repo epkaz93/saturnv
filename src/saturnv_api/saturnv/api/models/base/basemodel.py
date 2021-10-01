@@ -38,6 +38,10 @@ class AbstractBaseModel(object):
     def commit(self):
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def serialise(self):
+        raise NotImplementedError
+
 
 @six.add_metaclass(abc.ABCMeta)
 class AbstractBaseValueModel(AbstractBaseModel):

@@ -11,5 +11,5 @@ class PresenterWidgetMixin(QtCore.QObject):
         super().__init__()
         self._presenter = presenter
 
-    def presenter(self):
+    def presenter(self) -> BasePresenter:
         return self._presenter

@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 import six
 import abc
 import enum
-
+from datetime import datetime, timedelta
 
 from . import AbstractBaseModel, AbstractBaseValueModel
+
+import typing
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -21,14 +25,23 @@ class AbstractPresetModel(AbstractBaseModel):
     def deleted(self):
         return self.get_attribute('deleted')
 
+    @deleted.setter
+    def deleted(self, value):
+        self.set_attribute('deleted', value)
+
     @property
     @abc.abstractmethod
-    def versions(self):
+    def versions(self) -> typing.List[AbstractVersionModel]:
         raise NotImplementedError
 
     @property
     @abc.abstractmethod
-    def latest_version(self):
+    def latest_version(self) -> AbstractVersionModel:
+        raise NotImplementedError
+
+    @property
+    @abc.abstractmethod
+    def version_count(self) -> int:
         raise NotImplementedError
 
 
@@ -39,21 +52,43 @@ class AbstractVersionModel(AbstractBaseModel):
     def name(self):
         return self.get_attribute('name')
 
+    @name.setter
+    def name(self, value):
+        self.set_attribute('name', value)
+
     @property
     def icon(self):
         return self.get_attribute('icon')
 
+    @icon.setter
+    def icon(self, value):
+        self.set_attribute('icon', value)
+
     @property
     def description(self):
         return self.get_attribute('description')
+
+    @description.setter
+    def description(self, value):
+        self.set_attribute('description', value)
 
     @property
     def preset_uuid(self):
         return self.get_attribute('creation_date')
 
     @property
-    def creation_date(self):
+    def creation_date(self) -> datetime:
         return self.get_attribute('creation_date')
+
+    @property
+    def fuzzy_creation_date(self):
+        now = datetime.now()
+        if self.creation_date.date() == now.date():
+            return self.creation_date.strftime('%I:%M %p')
+        if self.creation_date > now - timedelta(days=7):
+            return self.creation_date.strftime('%A %I:%M %p')
+
+        return self.creation_date.strftime('%d %b %Y %I:%M %p')
 
     @property
     def blame(self):

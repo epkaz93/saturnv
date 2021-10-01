@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import functools
+
+from sqlalchemy import func
+
 from saturnv.api.databases import postgresql as database
 from saturnv.api.models import base
 
@@ -22,8 +26,14 @@ class PresetModel(PostgresqlBaseModelMixin, base.AbstractPresetModel):
         return [VersionModel(interface=v) for v in self._interface.versions]
 
     @property
-    def latest_version(self):
+    @functools.lru_cache()
+    def latest_version(self) -> VersionModel:
         return VersionModel(interface=self._interface.versions.order_by(database.Version.creation_date.desc()).one())
+
+    @property
+    @functools.lru_cache()
+    def version_count(self) -> int:
+        return self.session.query(func.count(database.Version.uuid)).filter(database.Version.preset_uuid == self.uuid).count()
 
 
 class VersionModel(PostgresqlBaseModelMixin, base.AbstractVersionModel):
@@ -43,7 +53,7 @@ class VersionModel(PostgresqlBaseModelMixin, base.AbstractVersionModel):
         return [SettingModel(interface=s) for s in self._interface.settings]
 
     @property
-    def shortcuts(self):
+    def shortcuts(self) -> typing.List[ShortcutModel]:
         return [ShortcutModel(interface=s) for s in self._interface.shortcuts]
 
 

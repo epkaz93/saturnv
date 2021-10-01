@@ -5,6 +5,7 @@ from Qt.QtCore import Qt
 from saturnv.ui.icons import icons
 from saturnv.ui.widgets import SpacerWidget
 from saturnv.ui.widgets.presets import PresetTreeView
+from saturnv.ui.models.preset import PresetItemModel
 
 from saturnv.ui.presenters import PresenterWidgetMixin, MainPresenter
 
@@ -50,7 +51,7 @@ class MainWindowMenuToolBar(QtWidgets.QToolBar):
 class MainWindow(QtWidgets.QMainWindow, PresenterWidgetMixin):
 
     def __init__(self, presenter: MainPresenter):
-        QtWidgets.QMainWindow.__init__(self, windowTitle='SaturnV Launcher', windowIcon=icons.application.saturnv)
+        QtWidgets.QMainWindow.__init__(self, windowTitle='SaturnV Launcher')
         PresenterWidgetMixin.__init__(self, presenter)
 
         print(self.presenter().repository)
@@ -91,25 +92,19 @@ class MainWindow(QtWidgets.QMainWindow, PresenterWidgetMixin):
         self.shelf_menu.addAction(self.action_delete_shelf)
         self.shelf_menu.addAction(self.action_browse_shelves)
 
-        self.setCentralWidget(PresetTreeView())
-        for preset in self.presenter().repository().all_presets():
-            item = QtWidgets.QTreeWidgetItem()
+        self.setCentralWidget(QtWidgets.QSplitter(orientation=QtCore.Qt.Horizontal))
+        self.preset_view = PresetTreeView(model=PresetItemModel(presets=self.presenter().repository().get_presets()))
+        self.preset_settings = QtWidgets.QWidget()
+        self.centralWidget().addWidget(self.preset_view)
+        self.centralWidget().addWidget(self.preset_settings)
+        self.centralWidget().setStretchFactor(0, 5)
+        self.centralWidget().setStretchFactor(1, 2)
 
-            item.setData(1, Qt.DisplayRole, preset.author)
-            versions = self.presenter().repository().versions_from_preset(preset)
-            print(versions)
-            latest = versions[0] if versions else None
-            icon = icons.icon_from_string(latest.icon) if latest and latest.icon else icons.types.preset
-            if latest:
-                item.setData(0, Qt.DisplayRole, latest.name)
-                item.setData(2, Qt.DisplayRole, str(len(versions)))
-                item.setData(3, Qt.DisplayRole, latest.description)
-            else:
-                item.setData(0, Qt.DisplayRole, str(preset.uuid))
+        self.menuToolBar().searchBar().textChanged.connect(self.preset_view.model().setFilterRegExp)
+        self.refresh_action.triggered.connect(self.refresh_presets)
 
-
-            item.setData(0, Qt.DecorationRole, icon)
-            self.centralWidget().addTopLevelItem(item)
+    def refresh_presets(self):
+        self.preset_view.model().sourceModel().setPresets(self.presenter().repository().get_presets())
 
     def menuToolBar(self) -> MainWindowMenuToolBar:
         return self._menuToolBar

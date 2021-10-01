@@ -26,7 +26,7 @@ QWidget {
     background-color: $default-color-dark;
     color: $default-color-text;
     selection-background-color: $default-color-highlight;
-    font-family: Roboto;
+    font-family: Roboto Slab;
 }
 
 QAbstractButton {
@@ -126,9 +126,9 @@ QScrollBar {
     width: 1em;
     height: 1em;
     padding: 0;
+    background-color: darken($default-color-dark, 15);
 
     &:handle {
-
         background-color: lighten($default-color-dark, 15);
         border-radius: 0.3em;
 
@@ -145,6 +145,17 @@ QScrollBar {
 
 }
 
+QSplitter {
+    &:handle {
+        background-color: lighten($default-color-dark, 15);
+        border-radius: 0.3em;
+
+        &:hover {
+            color: $default-color-highlight;
+        }
+    }
+}
+
 QAbstractItemView {
     padding: 0;
     border: none;
@@ -152,6 +163,12 @@ QAbstractItemView {
 
     &:item {
         padding: $default-padding * 1.5;
+
+        QLineEdit {
+            padding: 0;
+            margin: 0;
+        }
+
         /*
         &:hover {
             background-color: lighten($default-color-dark, 5);

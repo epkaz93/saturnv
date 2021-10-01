@@ -1,7 +1,7 @@
 from saturnv.ui.presenters import BasePresenter
 
-from saturnv.api.database.core import Session
-from saturnv.api.repository.repositories import SqlAlchemyRepository
+import saturnv.api
+import saturnv.api.repositories.base
 
 
 class MainPresenter(BasePresenter):
@@ -10,9 +10,9 @@ class MainPresenter(BasePresenter):
         super().__init__(*args, **kwargs)
         #self._configuration = configuration
 
-        self._repository = SqlAlchemyRepository(Session())
+        self._repository = saturnv.api.repository.Repository(saturnv.api.database.Session())
 
-    def repository(self):
+    def repository(self) -> saturnv.api.repositories.base.AbstractRepository:
         return self._repository
 
     @property

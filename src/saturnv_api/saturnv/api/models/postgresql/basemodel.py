@@ -24,8 +24,14 @@ class PostgresqlBaseModelMixin(AbstractBaseModel):
 
     @property
     def metadata(self):
-        return self.get_attribute('_metadata')
+        return self.get_attribute('metadata_')
 
     @property
     def session(self):
         return Session.object_session(self._interface)
+
+    def serialise(self):
+        j = {}
+        for column in self._interface.__table__.columns.keys():
+            j[column] = getattr(self, column)
+        return j
