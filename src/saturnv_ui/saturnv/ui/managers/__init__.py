@@ -1,2 +1,2 @@
-from .basemanager import BaseManager
-from .filemanager import FileBasedManager
+from .abstractbasemanager import AbstractBaseManager
+from .filemanager import FileBasedManager, RecursiveFileBasedManager
