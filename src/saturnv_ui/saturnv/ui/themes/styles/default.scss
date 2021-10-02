@@ -26,7 +26,7 @@ QWidget {
     background-color: $default-color-dark;
     color: $default-color-text;
     selection-background-color: $default-color-highlight;
-    font-family: Roboto Slab;
+    font-family: Roboto Roboto-Slab;
 }
 
 QAbstractButton {
@@ -91,6 +91,10 @@ QToolBar {
         &:pressed {
             background-color: $default-color-highlight;
         }
+    }
+
+    QLineEdit {
+        background-color: $default-color-dark;
     }
 }
 
