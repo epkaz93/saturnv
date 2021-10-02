@@ -1,6 +1,7 @@
 import six
 import abc
-from uuid import uuid4
+
+import typing
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -19,7 +20,7 @@ class AbstractBaseModel(object):
         self.set_attribute('uuid', uuid)
 
     @property
-    def metadata(self):
+    def metadata(self) -> typing.Dict:
         return self.get_attribute('metadata')
 
     @uuid.setter
@@ -39,7 +40,7 @@ class AbstractBaseModel(object):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def serialise(self):
+    def serialise(self) -> typing.Dict:
         raise NotImplementedError
 
 

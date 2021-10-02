@@ -12,11 +12,20 @@ class ScreenshotManager(RecursiveFileBasedManager):
 
     def __getattribute__(self, name):
         attr = super().__getattribute__(name)
-        if name in self._items.keys():
-            return self.get_image(attr)
+        items = super().__getattribute__('_items')
+        get_image = ScreenshotManager.get_image
+        if name in items.keys():
+            return get_image(self, attr)
         else:
             return attr
 
     @functools.lru_cache()
-    def get_image(self, image) -> QtGui.QImage:
-        return QtGui.QImage(image)
+    def get_image(self, image) -> QtGui.QPixmap:
+        return QtGui.QPixmap(str(image))
+
+    def screenshot_from_string(self, path: str) -> QtGui.QPixmap:
+        parts = path.split('.')
+        if len(parts) == 1:
+            return getattr(self, (parts[0]))
+        else:
+            return getattr(self, parts[0]).screenshot_from_string('.'.join(parts[1:]))

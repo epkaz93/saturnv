@@ -5,6 +5,8 @@ from Qt import QtWidgets, QtGui, QtCore
 
 class PresetTreeView(QtWidgets.QTreeView):
 
+    presetSelectionChanged = QtCore.Signal(list, list)
+
     def __init__(self, model):
         super().__init__()
         proxy_model = QtCore.QSortFilterProxyModel()
@@ -23,6 +25,8 @@ class PresetTreeView(QtWidgets.QTreeView):
         self.setColumnHidden(1, True)
         self.setColumnHidden(4, True)
 
+        self.selectionModel().selectionChanged.connect(self.onSelectionChanged)
+
     def headerMenu(self, pos):
         menu = QtWidgets.QMenu()
         model = self.model().sourceModel()
@@ -31,3 +35,9 @@ class PresetTreeView(QtWidgets.QTreeView):
             action.toggled.connect(functools.partial(self.setColumnHidden, index, not self.isColumnHidden(index)))
             menu.addAction(action)
         menu.exec(self.mapToGlobal(pos))
+
+    def onSelectionChanged(self, selected, deselected):
+        selected = [self.model().sourceModel().preset_from_index(index) for index in self.selectionModel().selectedRows()]
+        deselected = [self.model().sourceModel().preset_from_index(index) for index in self.selectionModel().selectedRows()]
+
+        self.presetSelectionChanged.emit(selected, deselected)

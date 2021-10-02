@@ -17,12 +17,12 @@ class IconManager(RecursiveFileBasedManager):
         self._managers = []
         self._icons = []
 
-    def icon_from_string(self, path: typing.Union[str, Path]) -> QIcon:
+    def icon_from_string(self, path: str) -> QIcon:
         parts = path.split('.')
         if len(parts) == 1:
-            return self.__getattribute__(parts[0])
+            return getattr(self, parts[0])
         else:
-            return self.__getattribute__(parts[0]).icon_from_string('.'.join(parts[1:]))
+            return getattr(self, parts[0]).icon_from_string('.'.join(parts[1:]))
 
     def register_item(self, name: str, filepath: Path) -> QIcon:
         icon = QIcon(str(filepath))

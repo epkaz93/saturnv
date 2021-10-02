@@ -6,6 +6,7 @@ from saturnv.ui.icons import icons
 from saturnv.ui.widgets import SpacerWidget
 from saturnv.ui.widgets.presets import PresetTreeView
 from saturnv.ui.models.preset import PresetItemModel
+from saturnv.ui.widgets.presets import PresetEditorView
 
 from saturnv.ui.presenters import PresenterWidgetMixin, MainPresenter
 
@@ -94,11 +95,12 @@ class MainWindow(QtWidgets.QMainWindow, PresenterWidgetMixin):
 
         self.setCentralWidget(QtWidgets.QSplitter(orientation=QtCore.Qt.Horizontal))
         self.preset_view = PresetTreeView(model=PresetItemModel(presets=self.presenter().repository().get_presets()))
-        self.preset_settings = QtWidgets.QWidget()
+        self.preset_view.presetSelectionChanged.connect(self.presenter().setPresetSelection)
+        self.preset_settings = PresetEditorView(self.presenter())
         self.centralWidget().addWidget(self.preset_view)
         self.centralWidget().addWidget(self.preset_settings)
-        self.centralWidget().setStretchFactor(0, 5)
-        self.centralWidget().setStretchFactor(1, 2)
+        #self.centralWidget().setStretchFactor(0, 5)
+        #self.centralWidget().setStretchFactor(1, 2)
 
         self.menuToolBar().searchBar().textChanged.connect(self.preset_view.model().setFilterRegExp)
         self.refresh_action.triggered.connect(self.refresh_presets)

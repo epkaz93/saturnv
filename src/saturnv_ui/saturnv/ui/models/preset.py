@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import enum
-
 from Qt import QtWidgets, QtCore, QtGui
 
 from saturnv.ui.icons import icons
@@ -80,6 +78,9 @@ class PresetItemModel(QtGui.QStandardItemModel):
                 return latest_version.description
 
         return super().data(index, role)
+
+    def preset_from_index(self, index):
+        return self.presets()[index.row()]
 
     def presets(self):
         return self._presets
