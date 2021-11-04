@@ -5,7 +5,10 @@ from .presets import (
     AbstractVersionModel,
     AbstractSettingModel,
     AbstractShortcutModel,
-    AbstractOverrideModel
+    AbstractOverrideModel,
+    AbstractPackageSettingModel,
+    AbstractEnvironmentVariableSettingModel,
+    AbstractCommandSettingModel
 )
 
 from .shelves import AbstractShelfModel

@@ -2,15 +2,14 @@ from __future__ import annotations
 
 from sqlalchemy.orm.session import Session
 
-from saturnv.api.models.base import AbstractBaseModel
+from saturnv.api.models.base import AbstractBaseModel, AbstractBaseValueModel
 
 
-class PostgresqlBaseModelMixin(AbstractBaseModel):
+class PostgresqlBaseModelMixin(object):
 
     __interface_class__ = None
 
     def __init__(self, interface=None, **kwargs):
-        super().__init__(**kwargs)
         self._interface = interface if interface else self.__interface_class__()
 
     def set_attribute(self, name, value):

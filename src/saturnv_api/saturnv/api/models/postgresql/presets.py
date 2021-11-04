@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import functools
+import warnings
 
 from sqlalchemy import func
 
@@ -50,7 +51,26 @@ class VersionModel(PostgresqlBaseModelMixin, base.AbstractVersionModel):
 
     @property
     def settings(self) -> typing.List[SettingModel]:
-        return [SettingModel(interface=s) for s in self._interface.settings]
+        settings = []
+
+        for s in self._interface.settings:
+            try:
+                type_ = SettingModel.Types(s.type)
+            except ValueError:
+                type_ = None
+
+            if type_ == SettingModel.Types.package:
+                setting = PackageSettingModel(interface=s)
+            elif type_ == SettingModel.Types.envvar:
+                setting = EnvironmentVariableSettingModel(interface=s)
+            elif type_ == SettingModel.Types.command:
+                setting = CommandSettingModel(interface=s)
+            else:
+                setting = SettingModel(interface=s)
+
+            settings.append(setting)
+
+        return settings
 
     @property
     def shortcuts(self) -> typing.List[ShortcutModel]:
@@ -62,12 +82,47 @@ class SettingModel(PostgresqlBaseModelMixin, base.AbstractSettingModel):
     __interface_class__ = database.Setting
 
     def __init__(self, interface=None, **kwargs):
-        PostgresqlBaseModelMixin.__init__(self, interface)
+        PostgresqlBaseModelMixin.__init__(self, interface=interface)
         base.AbstractSettingModel.__init__(self, **kwargs)
 
     @property
     def version(self) -> VersionModel:
         return VersionModel(interface=self._interface.version)
+
+
+class PackageSettingModel(SettingModel, base.AbstractPackageSettingModel):
+
+    def __init__(self, interface=None, **kwargs):
+        if interface is not None:
+            package = kwargs.get('package')
+            kwargs['package'] = package if package else interface.name
+            version = kwargs.get('version')
+            kwargs['version'] = version if version else '.'.join(interface.value.get('version', []))
+            comparison = kwargs.get('comparison')
+            kwargs['comparison'] = comparison if comparison else interface.value.get('comparison', self.Comparisons.equals)
+
+        PostgresqlBaseModelMixin.__init__(self, interface=interface)
+        base.AbstractPackageSettingModel.__init__(self, **kwargs)
+
+
+class EnvironmentVariableSettingModel(SettingModel, base.AbstractEnvironmentVariableSettingModel):
+
+    def __init__(self, interface=None, **kwargs):
+        SettingModel.__init__(self, interface)
+        base.AbstractEnvironmentVariableSettingModel.__init__(self, **kwargs)
+
+
+class CommandSettingModel(SettingModel, base.AbstractCommandSettingModel):
+
+    def __init__(self, interface=None, **kwargs):
+        if interface is not None:
+            alias = kwargs.get('alias')
+            kwargs['alias'] = alias if alias else interface.value.get('alias')
+            command = kwargs.get('command')
+            kwargs['command'] = command if command else interface.value.get('command')
+
+        SettingModel.__init__(self, interface)
+        base.AbstractCommandSettingModel.__init__(self, **kwargs)
 
 
 class ShortcutModel(PostgresqlBaseModelMixin, base.AbstractShortcutModel):

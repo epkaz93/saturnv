@@ -1,6 +1,7 @@
 import six
 import abc
 
+
 import typing
 
 
@@ -52,7 +53,7 @@ class AbstractBaseValueModel(AbstractBaseModel):
         return self.get_attribute('type')
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.get_attribute('name')
 
     @property
@@ -62,4 +63,3 @@ class AbstractBaseValueModel(AbstractBaseModel):
     @property
     def value(self):
         return self.get_attribute('value')
-
