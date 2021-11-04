@@ -4,21 +4,21 @@ import getpass
 
 import tabulate
 
-from saturnv.api.repository import SqlAlchemyRepository
-
-from src.model.shelves import Shelf
+import saturnv.api
+session = saturnv.api.database.Session()
+repo = saturnv.api.repository.Repository(session)
+model = saturnv.api.model
 
 
 class Objects(enum.Enum):
 
-    shelf = ['shelf', 'shelves']
-    preset = 'preset'
-    version_link = 'version-link'
+    shelf = model.ShelfModel
+    preset = model.PresetModel
+    shelflink = model.ShelfModel
+    version = model.VersionModel
 
     def __eq__(self, other):
-        if isinstance(self.value, list):
-            return other in self.value
-        return self.value == other
+        return self.value == other or self.value.__name__ == other.__name__ or self.name == other
 
 
 class Commands(enum.Enum):
@@ -43,7 +43,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def list_command(object: Objects, repository: SqlAlchemyRepository):
+def list_command(object: Objects, repository: saturnv.api.repository.Repository):
     data = []
     if object == Objects.shelf:
         for shelf in repository.all_shelves():
@@ -60,14 +60,14 @@ def list_command(object: Objects, repository: SqlAlchemyRepository):
     print(tabulate.tabulate(data, headers=['Name', 'UUID', 'Descriptions']))
 
 
-def create_shelf_interactive(repository: SqlAlchemyRepository):
+def create_shelf_interactive(repository: saturnv.api.repository.Repository):
     name = input('Name: ')
     path = input('Path: ')
     shelf = Shelf(name=name, path=path, author=getpass.getuser())
     repository.add_shelf(shelf)
 
 
-def create_version_link_interactive(repository: SqlAlchemyRepository):
+def create_version_link_interactive(repository: saturnv.api.repository.Repository):
     pass
 
 
