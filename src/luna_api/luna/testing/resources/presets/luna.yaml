@@ -1,0 +1,13 @@
+name: luna
+packages:
+  - name: luna_ui
+    version: 1.0.0
+environment_variables: []
+commands:
+metadata:
+  label: A application for launching presets
+  description: Yackity Yackity Yackity
+resources:
+  - type: filesystem
+    url: '{FILESYSTEM_RESOURCES_ROOT}/luna.svg'
+    name: icon

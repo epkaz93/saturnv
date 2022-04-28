@@ -1,0 +1,16 @@
+name: blender
+packages:
+  - name: blender
+    version: 3.0.0
+environment_variables: []
+commands:
+  - type: shell
+    name: console
+    command: blender --python-console
+metadata:
+  label: A 3D modelling program
+  description: Yackity Yackity Yackity
+resources:
+  - type: filesystem
+    url: '{FILESYSTEM_RESOURCES_ROOT}/blender.svg'
+    name: icon
