@@ -1,9 +1,10 @@
 import abc
 import uuid
 import copy
-import logging
 
 from .field import Field
+
+import typing
 
 
 class ModelBase(object, metaclass=abc.ABCMeta):
@@ -11,9 +12,9 @@ class ModelBase(object, metaclass=abc.ABCMeta):
     __fields__ = []
 
     id: uuid.UUID = Field()
-    name: str = Field()
+    name: typing.AnyStr = Field()
 
-    def __init__(self, name, id=None):
+    def __init__(self, name: typing.AnyStr, id: uuid.UUID = None):
         for field in self.__fields__:
             setattr(self, f'_{field.name}', None)
 

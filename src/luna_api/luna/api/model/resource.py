@@ -1,10 +1,12 @@
 import io
 import abc
-import uuid
-from dataclasses import dataclass, field
-import typing
 
 from pathlib import Path
+
+from .base import ModelBase
+from .field import Field
+
+import typing
 
 
 class _ResourceMeta(type):
@@ -29,14 +31,15 @@ class ResourceMeta(abc.ABCMeta, _ResourceMeta):
     pass
 
 
-@dataclass
-class ResourceBase(object, metaclass=abc.ABCMeta):
+class ResourceBase(ModelBase, metaclass=abc.ABCMeta):
 
     __type__ = None
 
-    name: typing.AnyStr
-    uri: typing.AnyStr
-    id: uuid.UUID = field(default_factory=uuid.uuid4)
+    uri = Field()
+
+    def __init__(self, name, uri, id=None):
+        super().__init__(name, id)
+        self.uri = uri
 
     def get(self):
         """"""

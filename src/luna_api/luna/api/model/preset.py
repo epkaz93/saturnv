@@ -1,28 +1,38 @@
-import uuid
+from __future__ import annotations
+
+import getpass
 
 from .base import ModelBase
 from .field import Field
 
-from .resource import ResourceType
-from .package import PackageType
-
 import typing
+if typing.TYPE_CHECKING:
+    from typing import AnyStr
+    from .package import Package
+    from .resource import ResourceType
+
+    PackagesList = typing.List[Package]
+    ResourcesList = typing.List[ResourceType]
 
 
 class Preset(ModelBase):
 
-    packages = Field()
-    commands = Field()
-    environment_variables = Field()
-    metadata = Field()
-    resources = Field()
+    author: AnyStr = Field()
+    packages: PackagesList = Field()
+    commands: typing.List = Field()
+    environment_variables: typing.Dict = Field()
 
-    def __init__(self, name, packages=None, commands=None, environment_variables=None,
-                 resources=None, metadata=None, id=None):
+    metadata: typing.Dict = Field()
+    resources: ResourcesList = Field()
+
+    def __init__(self, name: AnyStr, author: AnyStr = None, packages: PackagesList = None,
+                 commands=None, environment_variables=None, resources: ResourcesList = None,
+                 metadata=None, id=None):
         super().__init__(name, id)
 
-        self.packages = packages
-        self.commands = commands
-        self.environment_variables = environment_variables
-        self.metadata = metadata
-        self.resources = resources
+        self.author = author if author else getpass.getuser()
+        self.packages = packages if packages else []
+        self.commands = commands if commands else []
+        self.environment_variables = environment_variables if environment_variables else {}
+        self.metadata = metadata if metadata else {}
+        self.resources = resources if resources else []

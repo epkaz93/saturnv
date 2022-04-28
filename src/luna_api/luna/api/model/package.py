@@ -1,7 +1,13 @@
+from __future__ import annotations
+
 import enum
-from dataclasses import dataclass
+
+from .base import ModelBase
+from .field import Field
 
 import typing
+if typing.TYPE_CHECKING:
+    from typing import AnyStr
 
 
 class ComparisonType(enum.Enum):
@@ -11,16 +17,28 @@ class ComparisonType(enum.Enum):
     greaterthanequals = '>='
 
 
-@dataclass
-class Package(object):
+class Package(ModelBase):
 
-    name: typing.AnyStr
-    version: typing.AnyStr = ''
-    comparison: typing.AnyStr = ComparisonType.greaterthanequals
+    version: AnyStr = Field()
+    comparison: ComparisonType = Field()
+
+    def __init__(self, name: AnyStr, version: AnyStr,
+                 comparison: ComparisonType, id=None):
+        super().__init__(name, id)
+        self.version = version
+        self.comparison = comparison
 
     @property
     def major(self):
         return self.version_parts[0]
+
+    @property
+    def minor(self):
+        return self.version_parts[1]
+
+    @property
+    def patch(self):
+        return self.version_parts[2]
 
     @property
     def version_parts(self):
@@ -31,6 +49,3 @@ class Package(object):
             except ValueError:
                 parts.append(part)
         return parts
-
-
-PackageType = typing.TypeVar('PackageType', bound=Package)
