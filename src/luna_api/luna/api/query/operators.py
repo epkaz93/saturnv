@@ -1,24 +1,10 @@
 from __future__ import annotations
 
+import abc
 import typing
 
 if typing.TYPE_CHECKING:
     from ..model.field import Field
-
-
-class OperatorMeta(type):
-
-    operators = {}
-
-    def __new__(mcs, name, bases, attrs):
-        cls = super().__new__(mcs, name, bases, attrs)
-        mcs.operators[cls.symbol] = cls
-        return cls
-
-    @classmethod
-    def create_operator(mcs, symbol, a, b):
-        cls = mcs.operators[symbol]
-        return cls(a, b)
 
 
 class OperatorComparisonBase(object):
@@ -51,7 +37,8 @@ class ComparisonBase(OperatorComparisonBase):
         return f'{self.__class__.__name__}: {a_str} {self.symbol} {b_str}'
     """
 
-class OperatorBase(OperatorComparisonBase):
+
+class OperatorBase(OperatorComparisonBase, metaclass=abc.ABCMeta):
 
     def __init__(self, field: typing.Union[Field, OperatorComparisonBase], other: typing.Any):
         self.field = field
@@ -64,8 +51,28 @@ class OperatorBase(OperatorComparisonBase):
         value = getattr(obj, self.field.name)
         return self._raw_process(value, self.other)
 
+    @abc.abstractmethod
     def _raw_process(self, value, other):
         """"""
+
+
+class _OperatorMeta(type):
+
+    operators = {}
+
+    def __new__(mcs, name, bases, attrs):
+        cls = super().__new__(mcs, name, bases, attrs)
+        mcs.operators[cls.symbol] = cls
+        return cls
+
+    @classmethod
+    def create_operator(mcs, symbol, a, b):
+        cls = mcs.operators[symbol]
+        return cls(a, b)
+
+
+class OperatorMeta(_OperatorMeta, abc.ABCMeta):
+    pass
 
 
 class EqualsOperator(OperatorBase, metaclass=OperatorMeta):
@@ -103,11 +110,17 @@ class GreaterThanOperator(OperatorBase, metaclass=OperatorMeta):
     symbol = '>'
     name = 'greaterthan'
 
+    def _raw_process(self, value, other):
+        return value > other
+
 
 class LessThanOperator(OperatorBase, metaclass=OperatorMeta):
 
     symbol = '<'
     name = 'lessthan'
+
+    def _raw_process(self, value, other):
+        return value < other
 
 
 class GreaterThanEqualsOperator(OperatorBase, metaclass=OperatorMeta):
@@ -115,8 +128,14 @@ class GreaterThanEqualsOperator(OperatorBase, metaclass=OperatorMeta):
     symbol = '>='
     name = 'greaterthanequals'
 
+    def _raw_process(self, value, other):
+        return value >= other
+
 
 class LessThanEqualsOperator(OperatorBase, metaclass=OperatorMeta):
 
     symbol = '<='
     name = 'lessthanequals'
+
+    def _raw_process(self, value, other):
+        return value <= other

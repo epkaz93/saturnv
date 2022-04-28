@@ -19,8 +19,8 @@ class YAMLRepository(RepositoryBase):
     def get_preset_by_id(self, id_: uuid.UUID) -> Preset:
         pass
 
-    def query(self, *operators) -> YAMLQuery:
-        return YAMLQuery(*operators, repository=self)
+    def query(self, type_) -> YAMLQuery:
+        return YAMLQuery(type_, repository=self)
 
     def __init__(self, path: Path):
         super().__init__()

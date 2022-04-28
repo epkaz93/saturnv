@@ -28,16 +28,15 @@ class YAMLQuery(QueryBase):
                     return result_a or result_b
 
             if isinstance(operator_, operators.OperatorBase):
-                return operator_.process(preset)
+                return operator_.process(preset_)
 
         for preset in self.repository.get_all_presets():
             yield_preset = True
             for operator in self.operators:
-                print(operator)
                 if isinstance(operator, operators.OperatorComparisonBase):
                     yield_preset = fetch_helper(operator, preset)
                     if yield_preset is False:
-                        continue
-            print(yield_preset)
+                        break
+
             if yield_preset:
                 yield preset
