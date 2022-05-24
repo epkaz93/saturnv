@@ -1,6 +1,6 @@
-from .base import QueryBase
+from luna.api.query.base import QueryBase
 
-from . import operators
+from luna.api.query import operators
 
 
 class YAMLQuery(QueryBase):

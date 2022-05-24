@@ -5,9 +5,9 @@ import uuid
 
 import yaml
 
-from .base import RepositoryBase
-from ..model.preset import Preset
-from ..query.yaml import YAMLQuery
+from luna.api.repository.base import RepositoryBase
+from luna.api.model.preset import Preset
+from yaml_datasource.api.query import YAMLQuery
 
 import typing
 if typing.TYPE_CHECKING:
