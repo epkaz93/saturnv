@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import unittest
 from parameterized import parameterized
 
@@ -8,9 +10,14 @@ from luna.api.query.base import QueryBase
 from luna.api.query import operators
 
 from luna.api.repository.base import NullRepository
-from luna.api.repository.yaml import YAMLRepository
+from luna.plugin.pluginmanager import PluginManager
+
+import typing
+if typing.TYPE_CHECKING:
+    from yaml_datasource.api.repository import YAMLRepository
 
 REPO_PATH = Path(__file__).parent / 'resources'
+plugin_manager = PluginManager()
 
 
 class TestQuery(unittest.TestCase):
@@ -65,7 +72,11 @@ class TestQuery(unittest.TestCase):
 class TestQueryOperation(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.repo = YAMLRepository(REPO_PATH)
+        plugin = plugin_manager.get_named_plugin('yaml_api_plugin')
+        plugin.load()
+        import luna.api.repository
+
+        self.repo: YAMLRepository = luna.api.repository.yaml.YAMLRepository(REPO_PATH)
         self.cached_presets = list(self.repo.get_all_presets())
 
     @parameterized.expand([
